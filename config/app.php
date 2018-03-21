@@ -1,5 +1,7 @@
 <?php
 
 return [
-	'TEST' => 'dsds'
+	'name' => [
+		'mur' => 'eee'
+	]
 ];
