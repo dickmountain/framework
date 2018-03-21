@@ -30,8 +30,8 @@ class Config
 
 	protected function extractFromConfig($key)
 	{
-		$filtered = array_reduce(explode('.', $key), function ($filtered, $key_part){
-			if($this->exists($filtered, $key_part)){
+		$filtered = array_reduce(explode('.', $key), function ($filtered, $key_part) {
+			if($this->exists($filtered, $key_part)) {
 				return $filtered[$key_part];
 			}
 			return null;
@@ -40,7 +40,8 @@ class Config
 		return $filtered;
 	}
 
-	protected function exists(array $config, $key){
+	protected function exists(array $config, $key)
+	{
 		return array_key_exists($key, $config);
 	}
 
