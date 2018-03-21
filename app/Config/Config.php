@@ -22,7 +22,6 @@ class Config
 	public function get($key, $default = null)
 	{
 		if ($this->exists($this->cache, $key)) {
-			dump('extractFromCache');
 			return $this->cache[$key];
 		}
 
