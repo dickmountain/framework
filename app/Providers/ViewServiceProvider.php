@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Views\View;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Twig_Environment;
+use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
 
 class ViewServiceProvider extends AbstractServiceProvider
@@ -16,11 +17,19 @@ class ViewServiceProvider extends AbstractServiceProvider
 	public function register()
 	{
 		$container = $this->getContainer();
-		$container->share(View::class, function () {
+		$config = $container->get('config');
+
+		$container->share(View::class, function () use ($config) {
 			$loader = new Twig_Loader_Filesystem(base_path('views'));
+
 			$twig = new Twig_Environment($loader, [
-				'cache' => false
+				'cache' => $config->get('cache.views.path'),
+				'debug' => $config->get('app.debug')
 			]);
+
+			if ($config->get('app.debug')) {
+				$twig->addExtension(new Twig_Extension_Debug());
+			}
 
 			return new View($twig);
 		});
