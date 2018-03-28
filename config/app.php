@@ -6,5 +6,6 @@ return [
 	'providers' => [
 		'App\Providers\ViewServiceProvider',
 		'App\Providers\AppServiceProvider',
+		'App\Providers\DatabaseServiceProvider',
 	]
 ];
