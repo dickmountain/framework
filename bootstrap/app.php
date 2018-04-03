@@ -1,5 +1,7 @@
 <?php
 
+use App\Exceptions\Handler;
+
 session_start();
 
 require_once __DIR__.'/../vendor/autoload.php';
@@ -21,6 +23,7 @@ try {
 		$container->get('request'), $container->get('response')
 	);
 } catch (Exception $e) {
-	dump($e);
+	$handler = new Handler($e);
+	$response = $handler->respond();
 }
 
