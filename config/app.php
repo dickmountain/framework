@@ -7,5 +7,6 @@ return [
 		'App\Providers\ViewServiceProvider',
 		'App\Providers\AppServiceProvider',
 		'App\Providers\DatabaseServiceProvider',
+		'App\Providers\SessionServiceProvider',
 	]
 ];

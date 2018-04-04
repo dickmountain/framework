@@ -1,12 +1,15 @@
 <?php
 
-$container = new League\Container\Container;
+use League\Container\{Container, ReflectionContainer};
+use App\Providers\ConfigServiceProvider;
+
+$container = new Container;
 
 $container->delegate(
-	new \League\Container\ReflectionContainer
+	new ReflectionContainer
 );
 
-$container->addServiceProvider(new App\Providers\ConfigServiceProvider());
+$container->addServiceProvider(new ConfigServiceProvider());
 foreach ($container->get('config')->get('app.providers') as $provider) {
 	$container->addServiceProvider($provider);
 }

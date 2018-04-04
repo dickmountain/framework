@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Session\SessionInterface;
 use Exception;
 use ReflectionClass;
 use Zend\Diactoros\Response\RedirectResponse;
@@ -9,10 +10,12 @@ use Zend\Diactoros\Response\RedirectResponse;
 class Handler
 {
 	protected $exception;
+	protected $session;
 
-	public function __construct(Exception $exception)
+	public function __construct(Exception $exception, SessionInterface $session)
 	{
 		$this->exception = $exception;
+		$this->session = $session;
 	}
 
 	public function respond()
@@ -28,6 +31,11 @@ class Handler
 
 	protected function handleValidationException(ValidationException $e)
 	{
+		$this->session->set([
+			'errors' => $e->getErrors(),
+			'old' => $e->getOldInput()
+		]);
+
 		return redirect('/auth/login');
 	}
 
