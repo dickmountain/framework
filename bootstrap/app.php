@@ -19,6 +19,7 @@ require_once base_path('bootstrap/container.php');
 
 $route = $container->get(RouteCollection::class);
 
+require_once base_path('bootstrap/middleware.php');
 require_once base_path('routes/web.php');
 
 try {
