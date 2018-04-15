@@ -1,6 +1,7 @@
 <?php
 
 return [
+	'name' => env('APP_NAME'),
 	'debug' => env('APP_DEBUG', false),
 
 	'providers' => [
@@ -8,6 +9,7 @@ return [
 		'App\Providers\AppServiceProvider',
 		'App\Providers\DatabaseServiceProvider',
 		'App\Providers\SessionServiceProvider',
+		'App\Providers\ViewShareServiceProvider',
 	],
 
 	'middleware' => [
