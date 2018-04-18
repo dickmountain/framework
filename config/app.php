@@ -11,6 +11,7 @@ return [
 		'App\Providers\SessionServiceProvider',
 		'App\Providers\ViewShareServiceProvider',
 		'App\Providers\HashServiceProvider',
+		'App\Providers\AuthServiceProvider',
 	],
 
 	'middleware' => [
