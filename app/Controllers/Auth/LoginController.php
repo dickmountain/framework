@@ -4,6 +4,7 @@ namespace App\Controllers\Auth;
 
 use App\Auth\Auth;
 use App\Controllers\Controller;
+use App\Session\Flash;
 use App\Views\View;
 use League\Route\RouteCollection;
 use Psr\Http\Message\RequestInterface;
@@ -14,12 +15,14 @@ class LoginController extends Controller
 	protected $view;
 	protected $auth;
 	protected $route;
+	protected $flash;
 
-	public function __construct(View $view, Auth $auth, RouteCollection $route)
+	public function __construct(View $view, Auth $auth, RouteCollection $route, Flash $flash)
 	{
 		$this->view = $view;
 		$this->auth = $auth;
 		$this->route = $route;
+		$this->flash = $flash;
 	}
 
 	public function index(RequestInterface $request, ResponseInterface $response)
@@ -37,7 +40,8 @@ class LoginController extends Controller
 		$attempt = $this->auth->attempt($data['email'], $data['password']);
 
 		if (!$attempt) {
-			//
+			$this->flash->now('error', 'Auth error');
+			return redirect($request->getUri()->getPath());
 		}
 
 		return redirect($this->route->getNamedRoute('home')->getPath());
