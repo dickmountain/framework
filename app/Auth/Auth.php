@@ -40,20 +40,11 @@ class Auth
 		return true;
 	}
 
-	protected function needsRehash($user)
+	public function logout()
 	{
-		return $this->hash->needsRehash($user->password);
+		$this->session->clear('id');
 	}
-
-	protected function rehashPassword($user, $password)
-	{
-		$this->db->getRepository(User::class)->find($user->id)->update([
-			'password' => $this->hash->create($password)
-		]);
-
-		$this->db->flush();
-	}
-
+	
 	public function user()
 	{
 		return $this->user;
@@ -78,6 +69,20 @@ class Auth
 		}
 
 		$this->user = $user;
+	}
+
+	protected function needsRehash($user)
+	{
+		return $this->hash->needsRehash($user->password);
+	}
+
+	protected function rehashPassword($user, $password)
+	{
+		$this->db->getRepository(User::class)->find($user->id)->update([
+			'password' => $this->hash->create($password)
+		]);
+
+		$this->db->flush();
 	}
 	
 	protected function setUserSession($user)
