@@ -31,6 +31,11 @@ class Csrf
 		return $token;
 	}
 
+	public function tokenIsValid($token)
+	{
+		return $token === $this->session->get($this->key());
+	}
+
 	protected function tokenNeedsToBeGenerated()
 	{
 		if (!$this->session->exists($this->key())) {
