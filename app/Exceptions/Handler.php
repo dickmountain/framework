@@ -45,7 +45,7 @@ class Handler
 			'old' => $e->getOldInput()
 		]);
 
-		return redirect('/auth/login');
+		return redirect($e->getPath());
 	}
 
 	protected function handleCsrfTokenException(CsrfTokenException $e)
