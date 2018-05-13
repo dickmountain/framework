@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Auth;
 
+use App\Auth\Auth;
 use App\Auth\Hashing\Hasher;
 use App\Controllers\Controller;
 use App\Models\User;
@@ -17,13 +18,15 @@ class RegisterController extends Controller
 	protected $hash;
 	protected $route;
 	protected $db;
+	protected $auth;
 
-	public function __construct(View $view, Hasher $hash, RouteCollection $route, EntityManager $db)
+	public function __construct(View $view, Hasher $hash, RouteCollection $route, EntityManager $db, Auth $auth)
 	{
 		$this->view = $view;
 		$this->hash = $hash;
 		$this->route = $route;
 		$this->db = $db;
+		$this->auth = $auth;
 	}
 
 	public function index(RequestInterface $request, ResponseInterface $response)
@@ -36,6 +39,10 @@ class RegisterController extends Controller
 		$data = $this->validateRegistration($request);
 
 		$user = $this->createUser($data);
+
+		if ($this->auth->attempt($data['email'], $data['password'])) {
+			return redirect('/');
+		}
 
 		return redirect($this->route->getNamedRoute('home')->getPath());
 	}
