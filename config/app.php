@@ -13,6 +13,7 @@ return [
 		'App\Providers\AuthServiceProvider',
 		'App\Providers\CsrfServiceProvider',
 		'App\Providers\ValidationServiceProvider',
+		'App\Providers\CookiesServiceProvider',
 		'App\Providers\ViewShareServiceProvider',
 	],
 
