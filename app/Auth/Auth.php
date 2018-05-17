@@ -4,6 +4,7 @@ namespace App\Auth;
 
 
 use App\Auth\Hashing\Hasher;
+use App\Cookies\Cookies;
 use App\Models\User;
 use App\Session\SessionInterface;
 use Doctrine\ORM\EntityManager;
@@ -15,15 +16,25 @@ class Auth
 	protected $hash;
 	protected $session;
 	protected $user;
+	protected $recaller;
+	protected $cookies;
 
-	public function __construct(EntityManager $db, Hasher $hash, SessionInterface $session)
+	public function __construct(
+		EntityManager $db,
+		Hasher $hash,
+		SessionInterface $session,
+		Recaller $recaller,
+		Cookies $cookies
+	)
 	{
 		$this->db = $db;
 		$this->hash = $hash;
 		$this->session = $session;
+		$this->recaller = $recaller;
+		$this->cookies = $cookies;
 	}
 	
-	public function attempt($username, $password)
+	public function attempt($username, $password, $remember = false)
 	{
 		$user = $this->getByUsername($username);
 
@@ -36,6 +47,10 @@ class Auth
 		}
 
 		$this->setUserSession($user);
+
+		if ($remember) {
+			$this->setRememberToken($user);
+		}
 
 		return true;
 	}
@@ -105,5 +120,19 @@ class Auth
 		return $this->db->getRepository(User::class)->findOneBy([
 			'email' => $username
 		]);
+	}
+
+	protected function setRememberToken($user)
+	{
+		list($identifier, $token) = $this->recaller->generate();
+
+		$this->cookies->set('remember', $this->recaller->generateValueForCookie($identifier, $token));
+
+		$this->db->getRepository(User::class)->find($user->id)->update([
+			'remember_identifier' => $identifier,
+			'remember_token' => $this->recaller->generateTokenHashForDatabase($token)
+		]);
+
+		$this->db->flush();
 	}
 }

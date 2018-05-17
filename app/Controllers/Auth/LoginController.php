@@ -37,7 +37,7 @@ class LoginController extends Controller
 			'password' => ['required'],
 		]);
 
-		$attempt = $this->auth->attempt($data['email'], $data['password']);
+		$attempt = $this->auth->attempt($data['email'], $data['password'], isset($data['remember']));
 
 		if (!$attempt) {
 			$this->flash->now('error', 'Auth error');
