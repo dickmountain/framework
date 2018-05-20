@@ -86,6 +86,39 @@ class Auth
 		$this->user = $user;
 	}
 
+	public function hasRecaller()
+	{
+		return $this->cookies->exists('remember');
+	}
+
+	public function setUserFromCookie()
+	{
+		list($identifier, $token) = $this->recaller->splitCookieValue($this->cookies->get('remember'));
+
+		$user = $this->db->getRepository(User::class)->findOneBy([
+			'remember_identifier' => $identifier
+		]);
+
+		if (!$user) {
+			$this->cookies->clear('remember');
+			return;
+		}
+
+		if (!$this->recaller->validateToken($token, $user->remember_token)) {
+			$this->db->getRepository(User::class)->find($user->id)->update([
+				'remember_identifier' => null,
+				'remember_token' => null
+			]);
+			$this->db->flush();
+
+			$this->cookies->clear('remember');
+
+			throw new Exception();
+		}
+
+		$this->setUserFromSession($user);
+	}
+
 	protected function needsRehash($user)
 	{
 		return $this->hash->needsRehash($user->password);
