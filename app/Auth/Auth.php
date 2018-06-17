@@ -53,7 +53,7 @@ class Auth
 		return true;
 	}
 
-	public function logout()
+	public function logout() // test
 	{
 		$this->userProvider->clearRememberIdentifier($this->user->id);
 
