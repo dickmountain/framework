@@ -19,3 +19,5 @@ $route->group('', function ($route) {
 	$route->post('/auth/register', 'App\Controllers\Auth\RegisterController::register');
 })->middleware($container->get(Guest::class));
 
+$route->get('/posts', 'App\Controllers\PostController::index')->setName('posts.index');
+

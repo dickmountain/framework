@@ -7,7 +7,8 @@ return [
 	'providers' => [
 		'App\Providers\ViewServiceProvider',
 		'App\Providers\AppServiceProvider',
-		'App\Providers\DatabaseServiceProvider',
+		'App\Providers\DoctrineServiceProvider',
+		'App\Providers\EloquentServiceProvider',
 		'App\Providers\SessionServiceProvider',
 		'App\Providers\HashServiceProvider',
 		'App\Providers\AuthServiceProvider',
@@ -15,6 +16,7 @@ return [
 		'App\Providers\ValidationServiceProvider',
 		'App\Providers\CookiesServiceProvider',
 		'App\Providers\ViewShareServiceProvider',
+		'App\Providers\PaginationServiceProvider',
 	],
 
 	'middleware' => [
