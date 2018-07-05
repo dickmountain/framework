@@ -7,7 +7,6 @@ use App\Views\ViewPaginationFactory;
 use Illuminate\Pagination\LengthAwarePaginator;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
-use League\Route\RouteCollection;
 
 class PaginationServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
